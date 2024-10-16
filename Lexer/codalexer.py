@@ -9,7 +9,8 @@ class Token:
 
 
 class Regex:
-    '''Simplified regular expression class'''
+    '''Custom regular expression class'''
+    #TODO: Write error cases and sample programs
     def __init__(self, token_class, text_re, stage_dict, 
                  optionals=[], repeats=[], inverts=[]):
         self.textexp = text_re
