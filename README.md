@@ -17,4 +17,4 @@ Compiler for Coda MIDI description language
 **Lbracket** - ['['] \
 **Rbracket** - [']'] \
 **Separator** - [','] \
-**Comment** - ['\\']['A'-'Z''a'-'z']*['\n']
+**Comment** - ['//']['A'-'Z''a'-'z']*['\n']

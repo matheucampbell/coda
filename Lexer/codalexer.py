@@ -5,21 +5,20 @@ class Token:
         self.text = text
     
     def __repr__(self):
-        return f"<{self.token_class}, VALUE={self.text}>"
+        return f"<{self.token_class}, VALUE='{self.text}'>"
 
 
 class Regex:
     '''Simplified regular expression class'''
-    def __init__(self, token_class, stage_dict, text_re, optionals=[]):
-        self.length = 0
+    def __init__(self, token_class, text_re, stage_dict, optionals=[]):
         self.textexp = text_re
         self.tclass = token_class
         self.stages = stage_dict
         self.opts = optionals
+        self.min_stage = max(set(stage_dict.keys()) - set(optionals))
     
     def search(self, input):
         '''Search for a match in given input'''
-        print("Searching for", self.tclass)
         return self.match(input)
     
     def match(self, input):
@@ -27,22 +26,22 @@ class Regex:
         i = 0
         stage = 0
         while i < len(input) and stage <= max(self.stages.keys()):
-            if input[i] not in self.opts and input[i] in self.stages[i]:
+            if input[i] not in self.opts and input[i] in self.stages[stage]:
                 i += 1
                 stage += 1
             elif stage in self.opts:
+                # print(f"Stage {stage} optional and skipped.")
                 stage += 1
             else:  # Stage not matched and not optional
-                print(f"Stage {stage} for {self.textexp} not matched. Current char: {input[i]}")
-                print(input[i], self.opts, self.stages[i])
+                # print(f"Stage {stage} for {self.tclass} not matched. Current char: {input[i]}")
+                # print(input[i], self.opts, self.stages[i])
                 return None
         
-        # Check that final stage was reached
-        if stage - 1 == max(self.stages.keys()):
+        # Check that minimum final stage was reached
+        if stage - 1 >= self.min_stage:
             return Token(self.tclass, input[:i])
-        print(f"Final stage not reached. Current stage: {stage}")
+        # print(f"Minimum final stage not reached. Current stage: {stage}")
         return None
-
     
     def __repr__(self):
         return f"<REGEX, TEXTEXP={self.textexp}, STAGEDICT={self.stages}>"
@@ -64,6 +63,9 @@ class Lexer:
         '''Tokenizes the entire input string.'''
         with open(self.input_path, 'r') as infile:
             self.input = infile.read()
+            self.input = self.input.replace(" ", "")
+            self.input = "".join(self.input.splitlines())
+            # print(self.input)
 
         while self.position < len(self.input):
             self.exec_dfa()
@@ -82,15 +84,23 @@ class Lexer:
         Appends new token to the token list.
         Raises an exception on lexical error.
         '''
+        matches = []
         for regex in self.token_bank:
-            match = regex.search(self.input[self.position:])
-            if match:
-                self.tokens.append(match)
-                self.position += len(match.text)
-                print(match)
-                return
+            matches.append(regex.search(self.input[self.position:]))
         
-        raise Exception(f"Lexical error at position {self.position}: '{self.input[self.position]}'")
+        # Maximal munch
+        matches = [m for m in matches if m]
+        if not matches:
+            raise LexerException(f"No valid token at position {self.position}: '{self.input[self.position:self.position+10]}...'")
+        
+        matchlens = [len(m.text) for m in matches]
+        zipped = zip(matches, matchlens)
+        match = sorted(zipped, key=lambda x: x[1])[-1][0]
+
+        self.tokens.append(match)
+        self.position += len(match.text)
+        print(match)
+        return
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         '''Ensures the input file is closed.'''
