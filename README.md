@@ -5,9 +5,9 @@ Compiler for Coda MIDI description language
 
 ## Lexical Specification
 ### Tokens
-**Note** - ['A'-'F'][#, b]?[1-7] \
+**Note** - ['A'-'F']['#', 'b']?[1-7] \
 **Key** - ['A'-'F']['#', 'b']?['-', '+'] \
-**Chord** - ['A'-'F'][#, b, n]?['-', '+'][1-7]['Ch'] \
+**Chord** - ['A'-'F'][#, b]?['-', '+'][1-7]['Ch'] \
 **Declarator** - ['!'] \
 **Keyword** - ['key', 'sig', 'typ', 'rep', 'grp'] \
 **Separator** - [','] \
@@ -16,4 +16,5 @@ Compiler for Coda MIDI description language
 **Rbrace** - ['}'] \
 **Lbracket** - ['['] \
 **Rbracket** - [']'] \
-**Separator** - [',']
+**Separator** - [','] \
+**Comment** - ['\\']['A'-'Z''a'-'z']*['\n']
