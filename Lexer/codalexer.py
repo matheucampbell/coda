@@ -39,23 +39,15 @@ class Regex:
                 valid = c not in valid_chars
             
             if stage not in self.opts and stage not in self.reps and valid:
-                # print(f"Stage {stage} match: {c}")
                 i += 1
                 stage += 1
             elif stage in self.opts:
-                if valid:
-                    # print(f"Stage {stage} (optional) match: {c}")
-                    i += 1
+                if valid: i += 1
                 stage += 1
             elif stage in self.reps:
-                if valid:
-                    # print(f"Stage {stage} (arbitrarily repeated) match: {c}")
-                    i += 1
-                else:
-                    stage += 1
+                if valid: i += 1
+                else: stage += 1
             else:  # Stage not matched and not optional
-                # print(f"Stage {stage} for {self.tclass} not matched. Current char: {c}")
-                # print(c, self.opts, stage)
                 return None
         
         # Check that final stage was reached
@@ -69,8 +61,7 @@ class Regex:
 
 
 class Lexer:
-    def __init__(self, input_path):
-        self.input_path = input_path
+    def __init__(self):
         self.position = 0
         self.tokens = []  # Matched tokens
         self.token_bank = []  # Valid regexes
@@ -80,9 +71,9 @@ class Lexer:
         '''Adds a recognized token type.'''
         self.token_bank.append(regex)
 
-    def tokenize(self):
+    def tokenize(self, input_path):
         '''Tokenizes the entire input string.'''
-        with open(self.input_path, 'r') as infile:
+        with open(input_path, 'r') as infile:
             self.input = infile.read()
             # self.input = self.input.replace(" ", "")
             # self.input = "".join(self.input.splitlines())
@@ -126,9 +117,9 @@ class Lexer:
         print(match)
         return
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self):
         '''Ensures the input file is closed.'''
-        if hasattr(self, 'infile') and not self.infile.closed:
+        if not self.infile.closed:
             self.infile.close()
 
 
