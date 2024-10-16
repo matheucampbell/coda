@@ -17,4 +17,4 @@ Matheu Campbell (mgc2171)
 **Lbracket** - ['['] \
 **Rbracket** - [']'] \
 **Separator** - [','] \
-**Comment** - ['//']~['\n']*['\n']
+**Comment** - ['//']~['\n']\*['\n']
