@@ -10,12 +10,14 @@ class Token:
 
 class Regex:
     '''Simplified regular expression class'''
-    def __init__(self, token_class, text_re, stage_dict, optionals=[]):
+    def __init__(self, token_class, text_re, stage_dict, 
+                 optionals=[], repeats=[]):
         self.textexp = text_re
         self.tclass = token_class
         self.stages = stage_dict
         self.opts = optionals
-        self.min_stage = max(set(stage_dict.keys()) - set(optionals))
+        self.minfin = max(set(stage_dict.keys()) - set(optionals))  # Minimum final stage
+        self.max_stage = max(stage_dict.keys())
     
     def search(self, input):
         '''Search for a match in given input'''
@@ -25,22 +27,29 @@ class Regex:
         '''Returns Token object for a given input, None if invalid'''
         i = 0
         stage = 0
-        while i < len(input) and stage <= max(self.stages.keys()):
-            if input[i] not in self.opts and input[i] in self.stages[stage]:
+        while i < len(input) and stage <= self.max_stage:
+            c = input[i]
+            valid_chars = self.stages[stage]
+            if stage not in self.opts and c in valid_chars:
+                # print(f"Stage {stage} match: {c}")
                 i += 1
                 stage += 1
             elif stage in self.opts:
-                # print(f"Stage {stage} optional and skipped.")
+                if c in valid_chars:
+                    # print(f"Stage {stage} match: {c}")
+                    i += 1
+                # else:
+                    # print(f"Stage {stage} (optional) skipped.")
                 stage += 1
             else:  # Stage not matched and not optional
-                # print(f"Stage {stage} for {self.tclass} not matched. Current char: {input[i]}")
-                # print(input[i], self.opts, self.stages[i])
+                # print(f"Stage {stage} for {self.tclass} not matched. Current char: {c}")
+                # print(c, self.opts, self.stages[stage])
                 return None
         
         # Check that minimum final stage was reached
-        if stage - 1 >= self.min_stage:
+        if stage - 1 >= self.minfin:
             return Token(self.tclass, input[:i])
-        # print(f"Minimum final stage not reached. Current stage: {stage}")
+        print(f"Minimum final stage not reached. Current stage: {stage}")
         return None
     
     def __repr__(self):
