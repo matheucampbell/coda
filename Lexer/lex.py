@@ -1,8 +1,5 @@
 from codalexer import Lexer, Regex
 
-fpath = 'coda_sample1.cd'
-lexer = Lexer()
-
 note_stages = {
     0: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
     1: ['#', 'b'],
@@ -42,6 +39,7 @@ rbrace_stages = {0: '}'}
 lbracket_stages = {0: '['}
 rbracket_stages = {0: ']'}
 
+lexer = Lexer()
 lexer.register_token(Regex('NOTE', "['A'-'G']['#', 'b']?[1-7]",
                            note_stages,
                            optionals=note_opts))
@@ -70,5 +68,8 @@ lexer.register_token(Regex('KEYWORD', "['typ']", kw_typ_stages))
 lexer.register_token(Regex('KEYWORD', "['rep']", kw_rep_stages))
 lexer.register_token(Regex('KEYWORD', "['grp']", kw_grp_stages))
 
+fpath = 'coda_sample1.cd'
 lexer.tokenize(fpath)
-# print(lexer.get_tokens())
+
+for x in lexer.get_tokens():
+    print(x)

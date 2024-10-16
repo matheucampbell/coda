@@ -79,10 +79,11 @@ class Lexer:
             # self.input = self.input.replace(" ", "")
             # self.input = "".join(self.input.splitlines())
             # print(self.input)
-
+        
+        self.skip_whitespace()
         while self.position < len(self.input):
-            self.skip_whitespace()
             self.exec_dfa()
+            self.skip_whitespace()
 
     def get_tokens(self):
         '''Returns list of tokens after lexing.'''
@@ -115,7 +116,6 @@ class Lexer:
 
         self.tokens.append(match)
         self.position += len(match.text)
-        print(match)
         return
 
     def __exit__(self):
