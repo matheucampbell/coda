@@ -52,17 +52,18 @@ lexer.register_token(Regex('CHORD', "['A'-'G']['#', 'b']?[1-7]",
                            optionals=chord_opts))
 lexer.register_token(Regex('CONNECTOR', "['>']['>']?", 
                            connector_stages, 
-                           optionals=connector_opts))
+                           optionals=connector_opts,
+                           single=True))
 lexer.register_token(Regex('COMMENT', "['//']['A'-'Z''a'-'z']*['\n']", comment_stages,
                            repeats=comment_reps,
                            inverts=comment_invs))
-lexer.register_token(Regex('DECLARATOR', "'!'", declarator_stages))
-lexer.register_token(Regex('SEPARATOR', "','", separator_stages))
-lexer.register_token(Regex('LBRACE', "'{'", lbrace_stages))
-lexer.register_token(Regex('RBRACE', "'}'", rbrace_stages))
-lexer.register_token(Regex('LBRACKET', "'['", lbracket_stages))
-lexer.register_token(Regex('RBRACKET', "']'", rbracket_stages))
-lexer.register_token(Regex('NUMBER', "['1'-'9']", num_stages))
+lexer.register_token(Regex('DECLARATOR', "'!'", declarator_stages, single=True))
+lexer.register_token(Regex('SEPARATOR', "','", separator_stages, single=True))
+lexer.register_token(Regex('LBRACE', "'{'", lbrace_stages, single=True))
+lexer.register_token(Regex('RBRACE', "'}'", rbrace_stages, single=True))
+lexer.register_token(Regex('LBRACKET', "'['", lbracket_stages, single=True))
+lexer.register_token(Regex('RBRACKET', "']'", rbracket_stages, single=True))
+lexer.register_token(Regex('NUMBER', "['1'-'9']", num_stages, single=True))
 lexer.register_token(Regex('KEYWORD', "['key']", kw_key_stages))
 lexer.register_token(Regex('KEYWORD', "['sig']", kw_sig_stages))
 lexer.register_token(Regex('KEYWORD', "['typ']", kw_typ_stages))
