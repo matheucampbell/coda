@@ -3,7 +3,7 @@ Matheu Campbell (mgc2171)
 
 ## Installation/Build Steps
 1. Install Docker for the appropriate operating system.
-   The lexer uses for packaging/containerization.
+   The lexer uses Docker for packaging/containerization.
 2. Navigate to the Lexer subdirectory of this repository.
 3. Run `docker build -t coda-lexer .` to build the Docker image.
 
