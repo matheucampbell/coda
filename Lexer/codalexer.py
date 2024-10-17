@@ -1,11 +1,12 @@
 class Token:
     '''Instance of a particular token type'''
-    def __init__(self, token_class, text):
+    def __init__(self, token_class, text, valid):
         self.token_class = token_class
         self.text = text
+        self.valid = valid
     
     def __repr__(self):
-        return f"<{self.token_class}, VALUE='{self.text}'>"
+        return f"<{self.token_class}, VALUE='{self.text}', VALID={self.valid}>"
 
 
 class Regex:
@@ -28,6 +29,7 @@ class Regex:
     
     def match(self, input):
         '''Returns Token object for a given input, None if invalid'''
+        failed = []  # Failed stages
         i = 0
         stage = 0
         while i < len(input) and stage <= self.max_stage:
@@ -48,13 +50,17 @@ class Regex:
             elif stage in self.reps:
                 if valid: i += 1
                 else: stage += 1
-            else:  # Stage not matched and not optional
-                return None
+            else:  # Required stage not matched
+                # return None
+                failed.append(stage)
+                stage += 1
         
         # Check that final stage was reached
         if stage - 1 >= self.final:
-            return Token(self.tclass, input[:i].strip('\n'))
-        print(f"Minimum final stage not reached. Current stage: {stage}")
+            # print(self.tclass, self.failed, input[:i].strip('\n'))
+            return Token(self.tclass, input[:i].strip('\n'), valid=not failed)
+        # print(f"Minimum final stage not reached. Current stage: {stage}")
+        return Token(self.tclass, input[:i].strip('\n'), valid=False)
         return None
     
     def __repr__(self):
@@ -76,9 +82,6 @@ class Lexer:
         '''Tokenizes the entire input string.'''
         with open(input_path, 'r') as infile:
             self.input = infile.read()
-            # self.input = self.input.replace(" ", "")
-            # self.input = "".join(self.input.splitlines())
-            # print(self.input)
         
         self.skip_whitespace()
         while self.position < len(self.input):
@@ -105,9 +108,19 @@ class Lexer:
         for regex in self.token_bank:
             matches.append(regex.search(self.input[self.position:]))
         
-        matches = [m for m in matches if m]
+        print(matches) 
+        matches = [m for m in matches if m.valid]
+        print(matches)
         if not matches:
-            raise LexerException(f"No valid token at position {self.position}: '{self.input[self.position:min(self.position+10, len(self.input)-1)]}...'")
+            # Correction suggestion: If exactly one stage failed, suggest a correction.
+            # If exactly one stage failed for multiple possible tokens, choose the longest.
+
+            # Intent inferral: If all tokens failed in more than one stage, assume the 
+            # one that failed on the latest stage was intended. Report malformed token for that token type.
+            fails = [m.fail_stage for m in matches]
+            zipped = zip(matches, fails)
+            inferred_token = sorted(zipped, key=lambda x: x[1])[-1][0]
+            raise LexerException(f"LexicalError: Malformed {inferred_token.token_class} token at {self.position}: '{self.input[self.position:min(self.position+10, len(self.input)-1)]}...'")
         
         # Maximal munch
         matchlens = [len(m.text) for m in matches]

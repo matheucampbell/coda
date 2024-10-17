@@ -68,9 +68,3 @@ lexer.register_token(Regex('KEYWORD', "['sig']", kw_sig_stages))
 lexer.register_token(Regex('KEYWORD', "['typ']", kw_typ_stages))
 lexer.register_token(Regex('KEYWORD', "['rep']", kw_rep_stages))
 lexer.register_token(Regex('KEYWORD', "['grp']", kw_grp_stages))
-
-fpath = 'coda_sample1.cd'
-lexer.tokenize(fpath)
-
-for x in lexer.get_tokens():
-    print(x)
