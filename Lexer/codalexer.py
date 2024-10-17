@@ -139,10 +139,10 @@ class Lexer:
                 zipped = zip(almost, failures)
                 csugg = sorted(zipped, key=lambda x: x[1])[-1][0]
 
-                print(f"{len(almost)} single-stage failures found.")
+                # print(f"{len(almost)} single-stage failures found.")
                 raise LexerException(f"Malformed token found. For {csugg.token_class} token, correct stage {csugg.fails[0]} of input on line {line}, column {col}: {inp_slice}")
             else:
-                raise LexerException(f"Malformed token on line {line}, column {col}: {inp_slice}")
+                raise LexerException(f"Unrecognized symbol or token on line {line}, column {col}: {inp_slice}")
         
         # Maximal munch
         matchlens = [len(m.text) for m in valids]
