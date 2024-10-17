@@ -1,0 +1,19 @@
+// Coda Lexer Demo 4
+// This program contains a malformed comment, and the lexer suggests a correction.
+
+/ Piano section of New York, I Love You, But You're Bringing Me Down
+!key[F+]
+
+rep[4]{
+    typ[8]{
+        F+4*
+    }
+
+    typ[4]{
+        D-5*
+    }
+
+    typ[4]{
+        C#-4*
+    }
+}

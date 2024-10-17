@@ -1,0 +1,21 @@
+// Coda Lexer Demo 5
+// With multiple errors, the lexer will stop on the first error encountered.
+// This program contains multiple issues, but lexing stops at the first.
+// Errors on line 10, 15, and 19
+
+// Piano section of New York, I Love You, But You're Bringing Me Down
+!key[F+]
+
+rep[4]{
+    ty[]{
+        F+4*
+    }
+
+    typ[4]{
+        Dd#-5*
+    }
+
+    typ[4]{
+        H#-4*
+    }
+}

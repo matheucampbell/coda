@@ -1,0 +1,22 @@
+// Coda Lexer Demo 1
+// This program is correctly formatted, and Coda's lexer will parse it correctly.
+
+// First melody line of Nocturne Opus. 9 No. 1
+!key[Bb-]
+!sig[6, 4]
+
+typ[8] {
+Bb5>>C6>>Db6>>A5>>Bb5>>Gb5
+}
+
+typ[4] rep[4]{
+    F5
+}
+
+typ[8] {
+    Gb5>>F5>>Eb5>>C6
+}
+
+typ[2] {
+    Db5
+}

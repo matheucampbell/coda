@@ -1,0 +1,21 @@
+// Coda Lexer Demo 3
+// The Coda Lexer will suggest corrections for multicharacter tokens that
+// are malformed. Here, the key contains an extra symbol, and the lexer
+// flags it.
+
+// Piano section of New York, I Love You, But You're Bringing Me Down
+!key[F--]
+
+rep[4]{
+    typ[8]{
+        F+4*
+    }
+
+    typ[4]{
+        D-5*
+    }
+
+    typ[4]{
+        C#-4*
+    }
+}
