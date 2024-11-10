@@ -25,6 +25,8 @@ To run the lexer on the Examples in this folder, provide their paths as input fi
 ['!'] \
 **Keyword** - Specify key, time signature, note type, repetitions, or groupings of notes \
 ['key', 'sig', 'typ', 'rep', 'grp'] \
+**Number** - Nonzero numerical digit
+['1'-'9']
 **Separator** - Separator keyword arguments \
 [','] \
 **Connector** - Specifies standard or legato articulation between adjacent notes and chords \
