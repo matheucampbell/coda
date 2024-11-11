@@ -6,5 +6,5 @@ B -> TRG{B} | BB | N
 T -> typ[number] | e
 R -> rep[number] | e
 G -> grp[number] | e
-N -> W>N | W>>N | W
+N -> W | W>N | W>>N
 W -> chord | note
