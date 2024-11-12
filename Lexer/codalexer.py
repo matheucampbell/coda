@@ -151,6 +151,7 @@ class Lexer:
 
         self.tokens.append(match)
         self.position += len(match.text)
+        print(match, len(match.text))
         return
 
     def pos_to_coord(self, pos):

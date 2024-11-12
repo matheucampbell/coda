@@ -24,7 +24,7 @@ To run the lexer on the Examples in this folder, provide their paths as input fi
 **Declarator** - Marks the next keyword to be applied globally \
 ['!'] \
 **Keyword** - Specify key, time signature, note type, repetitions, or groupings of notes \
-['key', 'sig', 'typ', 'rep', 'grp'] \
+['key', 'sig', 'typ', 'rep', 'grp', 'tmp'] \
 **Number** - Nonzero numerical digit
 ['1'-'9']
 **Separator** - Separator keyword arguments \

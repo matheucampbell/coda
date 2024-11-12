@@ -1,7 +1,7 @@
 S -> E
 E -> GB
 G -> !MG | e
-M -> key[keysig] | sig[number, number]
+M -> key[keysig] | sig[number, number] | tmp[number]
 B -> TRG{B} | BB | N
 T -> typ[number] | e
 R -> rep[number] | e
