@@ -1,14 +1,14 @@
-S -> E
-E -> IB
+S -> IB
 I -> !K!M!D
 K -> key[keysig]
 M -> sig[number, number]
 D -> tmp[number]
 B -> CB'
-B'-> CB' | e
-C -> TRG{B} | N 
-T -> typ[number] | e
-R -> rep[number] | e
-G -> grp[number] | e
-N -> W | W>N | W>>N
+B'-> CB' | eps
+C -> TRG{B} | N
+T -> typ[number] | eps
+R -> rep[number] | eps
+G -> grp[number] | eps
+N -> WN'
+N'-> >N | >>N | eps
 W -> chord | note
