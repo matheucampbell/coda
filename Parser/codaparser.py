@@ -24,6 +24,8 @@ class Parser:
             if cur_sym != '_':
                 # print(f"Expanding '{cur_sym}'; Looking at '{cur_tok}'")
                 expanded = self.ptab.get_production(cur_sym, cur_tok)
+                if not expanded:
+                    raise ParserException(f"ParseError: No applicable production for current symbol {cur_sym} and next token {cur_tok}.")
                 # print(f"Expanded to {expanded}")
                 self.derived = expanded + self.derived[1:]  # Should be list of tokens and strings
             else:
@@ -69,7 +71,6 @@ class ParseTable:  # LL(1) Parsing
             # print(e, lookahead)
             if e[0] == nonterm and lookahead.equals(e[1]):
                 return self.entries[e]
-        print("Failed to find matching production")
         return None
 
 

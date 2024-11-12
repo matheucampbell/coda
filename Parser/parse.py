@@ -1,24 +1,6 @@
-from codaparser import *
-from lex import lexer
+from codalexer import Token
+from codaparser import Parser, ParseTable, Production
 
-import argparse
-import sys
-
-argparser = argparse.ArgumentParser()
-argparser.add_argument('-i', '--input-file', required=True, help='Input file for lexing')
-
-args = argparser.parse_args()
-
-# Run lexer
-try:
-    lexer.tokenize(args.input_file)
-except FileNotFoundError:
-    print(f"Invalid file path supplied: '{args.input_file}'")
-    sys.exit()
-
-token_list = lexer.get_tokens()
-
-# Run parser
 # Define dummy tokens for comparison
 eof = Token('EOF', '$')
 note = Token('NOTE', '-')
@@ -76,7 +58,6 @@ parse_table.register_entry(('Bp', rep), B.rules[0])
 parse_table.register_entry(('Bp', grp), B.rules[0])
 parse_table.register_entry(('Bp', lbrace), B.rules[0])
 parse_table.register_entry(('Bp', rbrace), ['_'])
-parse_table.register_entry(('Bp', lbrace), ['_'])
 parse_table.register_entry(('Bp', eof), ['_'])
 parse_table.register_entry(('C', note), C.rules[1])
 parse_table.register_entry(('C', chord), C.rules[1])
@@ -109,6 +90,3 @@ parse_table.register_entry(('Np', cconn), Np.rules[1])
 parse_table.register_entry(('W', chord), W.rules[0])
 parse_table.register_entry(('W', note), W.rules[1])
 parse_table.register_entry(('W', eof), ['_'])
-
-parser = Parser(token_list, parse_table, 'S')
-parser.parse()
