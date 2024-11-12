@@ -18,6 +18,12 @@ class Token:
         self.valid = not fails
         self.fails = fails
     
+    def equals(self, token):
+        if self.token_class not in ('KEYWORD', 'CONNECTOR'):
+            return self.token_class == token.token_class
+        else:
+            return self.token_class == token.token_class and self.text == token.text
+
     def __repr__(self):
         return f"<{self.token_class}, VALUE='{self.text}', VALID={self.valid}>"
 
