@@ -26,13 +26,14 @@ class Parser:
             print(f"Expanded to {expanded}")
             self.derived = expanded + self.derived[1:]  # Should be list of tokens and strings
         else:  # Match token
-            print(f"Attempting to match {str(cur_tok)}")
-            if cur_tok.equals(cur_sym):
-                self.pos += 1
-                self.derived = self.derived[1:]
-                print("Matched successfully.")
-            else:  # Error
-                pass
+            if cur_sym != '_':
+                print(f"Attempting to match {str(cur_tok)}")
+                if cur_tok.equals(cur_sym):
+                    self.pos += 1
+                    self.derived = self.derived[1:]
+                    print("Matched successfully.")
+                else:  # Error
+                    pass
     
     def print_derived(self):
         s = ""
