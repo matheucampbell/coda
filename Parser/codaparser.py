@@ -8,7 +8,6 @@ class Parser:
         self.pos = 0  # Position in list of input tokens
         self.input = input
         input.append(Token('EOF', '$'))
-        self.lookahead = input[self.pos]
         self.derived = [start_sym]  # Derived string, list of Tokens and strings (productions)
         self.ptab = parse_table
         self.done = False
@@ -18,7 +17,7 @@ class Parser:
             self.advance()
 
     def advance(self):
-        print(self.derived)
+        self.print_derived()
         cur_tok = self.input[self.pos]  # Token object
         cur_sym = self.derived[0]  # Token or string
         if not isinstance(cur_sym, Token):
@@ -34,6 +33,12 @@ class Parser:
                 print("Matched successfully.")
             else:  # Error
                 pass
+    
+    def print_derived(self):
+        s = ""
+        for val in self.derived:
+            s += val if not isinstance(val, Token) else val.text
+        print(f"Derivation: {s}")
 
 
 class ParseTable:  # LL(1) Parsing
@@ -51,8 +56,8 @@ class ParseTable:  # LL(1) Parsing
         '''
         # print(f"Fetching: {nonterm, lookahead}")
         for e in self.entries.keys():
+            # print(e, lookahead)
             if e[0] == nonterm and lookahead.equals(e[1]):
-                # print("Found next production")
                 return self.entries[e]
         print("Failed to find matching production")
         return None
