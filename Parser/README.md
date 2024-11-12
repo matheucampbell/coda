@@ -1,8 +1,12 @@
 S -> E
-E -> GB
-G -> !MG | e
-M -> key[keysig] | sig[number, number] | tmp[number]
-B -> TRG{B} | BB | N
+E -> IB
+I -> !K!M!D
+K -> key[keysig]
+M -> sig[number, number]
+D -> tmp[number]
+B -> CB'
+B'-> CB' | e
+C -> TRG{B} | N 
 T -> typ[number] | e
 R -> rep[number] | e
 G -> grp[number] | e

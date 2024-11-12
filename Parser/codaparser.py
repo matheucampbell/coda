@@ -8,6 +8,11 @@ class Parser:
         pass
 
 
+class ParseTable:
+    def __init__(self):
+        pass
+
+
 class AbstractSyntaxTree:
     def __init__(self):
         pass
