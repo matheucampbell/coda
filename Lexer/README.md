@@ -16,7 +16,7 @@ To run the lexer on the Examples in this folder, provide their paths as input fi
 ## Lexical Specification
 ### Tokens
 **Note** - A single musical note \
-['A'-'G']['#', 'b']?[1-7] \
+['A'-'G', '_']['#', 'b']?[1-7] \
 **Key** - Key signature of the following block \
 ['A'-'G']['#', 'b']?['-', '+'] \
 **Chord** - A triad, specified with root note, accidental, octave, and quality\
@@ -25,8 +25,8 @@ To run the lexer on the Examples in this folder, provide their paths as input fi
 ['!'] \
 **Keyword** - Specify key, time signature, note type, repetitions, or groupings of notes \
 ['key', 'sig', 'typ', 'rep', 'grp', 'tmp'] \
-**Number** - Nonzero numerical digit
-['1'-'9']
+**Number** - Nonzero number
+['1'-'9']['0'-'9']*
 **Separator** - Separator keyword arguments \
 [','] \
 **Connector** - Specifies standard or legato articulation between adjacent notes and chords \

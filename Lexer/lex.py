@@ -1,7 +1,7 @@
 from codalexer import Lexer, Regex
 
 note_stages = {
-    0: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+    0: ['A', 'B', 'C', 'D', 'E', 'F', 'G', '_'],
     1: ['#', 'b'],
     2: ['1', '2', '3', '4', '5', '6', '7']
 }
