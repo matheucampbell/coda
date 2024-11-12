@@ -108,9 +108,11 @@ class Lexer:
             self.exec_dfa()
             self.skip_whitespace()
 
-    def get_tokens(self):
+    def get_tokens(self, with_comments=False):
         '''Returns list of tokens after lexing.'''
-        return self.tokens
+        if with_comments:
+            return self.tokens
+        return [t for t in self.tokens if t.token_class != "COMMENT"]
 
     def skip_whitespace(self):
         '''Advances to the next non-newline character in input stream.'''
