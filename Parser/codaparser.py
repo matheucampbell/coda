@@ -1,15 +1,15 @@
-from ..Lexer import Token
+from codalexer import Token
 
 from typing import List
 
 
 class Parser:
-    def __init__(self, input: List[Token], parse_table):
+    def __init__(self, input: List[Token], parse_table, start_sym):
         self.pos = 0  # Position in list of input tokens
         self.input = input
-        input.append[Token('EOF', '$')]
+        input.append(Token('EOF', '$'))
         self.lookahead = input[self.pos]
-        self.derived = []  # Derived string
+        self.derived = [start_sym]  # Derived string, list of Tokens and strings (productions)
         self.ptab = parse_table
         self.done = False
     
@@ -18,13 +18,14 @@ class Parser:
             self.advance()
 
     def advance(self):
-        cur_tok = self.lookahead
-        cur_sym = self.derived[self.pos]
-        if cur_sym.isinstance(Production):  # Expand production
-            expanded = self.ptab(cur_sym, cur_tok)
-            self.derived = expanded + self.derived[1:]
+        cur_tok = self.lookahead  # Token object
+        cur_sym = self.derived[self.pos]  # Token or string
+        if not isinstance(cur_sym, Token):
+            expanded = self.ptab.get_production(cur_sym, cur_tok)
+            self.derived = expanded + self.derived[1:]  # Should be list of tokens and strings
         else:  # Match token
             if cur_tok.equals(cur_sym):
+                print(f"Matched {cur_tok}")
                 self.pos += 1
                 self.derived = self.derived[1:]
             else:  # Error
@@ -32,18 +33,22 @@ class Parser:
 
 
 class ParseTable:  # LL(1) Parsing
-    def __init__(self, productions):
+    def __init__(self):
         self.entries = {}  # {(nonterminal, Token) : Production, ...}
 
-    def register_entry(self):
+    def register_entry(self, coord, rhs):
         '''Add a cell to the table.'''
-        pass
+        self.entries[coord] = rhs  # RHS should be list of tokens or production names
 
-    def get_production(current_nonterm, lookahead: Token):
+    def get_production(self, nonterm, lookahead: Token):
         '''
         Returns production to take given current nonterminal and lookahead.
         If entry is not found, return None. Caller handles error.
         '''
+        print(f"Fetching: {nonterm, lookahead}")
+        for e in self.entries.keys():
+            if e[0] == nonterm and lookahead.equals(e[1]):
+                return self.entries[(nonterm, lookahead)]
 
 
 class Production:
