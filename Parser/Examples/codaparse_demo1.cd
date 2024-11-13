@@ -1,5 +1,6 @@
 // Coda Parser Demo 1
-// This program is syntactically correct.
+// This program is syntactically correct, and the Coda
+// parser will output an AST representation of it.
 
 // First melody line of Nocturne Opus. 9 No. 1
 !key[Bb-]

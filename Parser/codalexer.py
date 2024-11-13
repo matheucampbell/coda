@@ -17,12 +17,21 @@ class Token:
         self.text = text
         self.valid = not fails
         self.fails = fails
+        self.location = None
     
     def equals(self, token):
         if self.token_class not in ('KEYWORD', 'CONNECTOR'):
             return self.token_class == token.token_class
         else:
             return self.token_class == token.token_class and self.text == token.text
+    
+    def set_location(self, location):
+        self.location = location
+    
+    def get_location(self):
+        if not self.location:
+            return (None, None)
+        return self.location
 
     def __repr__(self):
         return f"<{self.token_class}, VALUE='{self.text}', VALID={self.valid}>"
@@ -157,6 +166,8 @@ class Lexer:
         zipped = zip(valids, matchlens)
         match = sorted(zipped, key=lambda x: x[1])[-1][0]
 
+        line, col = self.pos_to_coord(self.position)
+        match.set_location((line, col))
         self.tokens.append(match)
         self.position += len(match.text)
         # print(match, len(match.text))

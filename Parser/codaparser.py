@@ -45,14 +45,14 @@ class Parser:
             # print(f"Expanding '{cur_sym}'; Looking at '{cur_tok}'")
             expanded = self.ptab.get_production(cur_sym, cur_tok)
             if not expanded:
-                raise ParserException(f"ParseError: No applicable production for current symbol {cur_sym} and next token {cur_tok}.")
+                raise ParserException(f"SyntaxError: Token {cur_tok} on line {cur_tok.location[0]}, column {cur_tok.location[1]} cannot follow token {self.fderived[-1]}.")
             # print(f"Expanded to {expanded}")
             self.derived = expanded + self.derived[1:]  # Should be list of tokens and strings
 
             # Check if chosen production is nodable
             if expanded in self.nodables:
-                print("Nodable found:", expanded)
-                print("Closing symbol:", expanded[-1])
+                # print("Nodable found:", expanded)
+                # print("Closing symbol:", expanded[-1])
                 node = ProductionNodeAST(symbol_map[cur_sym])
                 self.nodestack[-1].add_child(node)
                 closesym = expanded[-1]
@@ -77,8 +77,8 @@ class Parser:
                     # print(self.root.children)
                     self.nodestack.pop()
                     self.closestack.pop()
-            else:  # Error
-                raise ParserException(f"ParseError: Failed to match {cur_tok}. Expected {cur_sym}")
+            else:
+                raise ParserException(f"ParseError: Failed to match {cur_tok}. Expected {cur_sym}.")
 
     def print_derived(self):
         s = ""
