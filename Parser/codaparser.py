@@ -10,7 +10,7 @@ symbol_map = {  # Maps production names to descriptions
     'T': 'DURATION MODIFIER',
     'R': 'REPETION MODIFIER',
     'G': 'GROUPING MODIFIER',
-    'W': 'NOTE/CHORD'
+    'W': 'NOTE/CHORD/REST'
 }
 
 class Parser:
@@ -42,7 +42,7 @@ class Parser:
                 self.derived = self.derived[1:]
                 return
             
-            # print(f"Expanding '{cur_sym}'; Looking at '{cur_tok}'")
+            print(f"Expanding '{cur_sym}'; Looking at '{cur_tok}'")
             expanded = self.ptab.get_production(cur_sym, cur_tok)
             if not expanded:
                 raise ParserException(f"SyntaxError: Token {cur_tok} on line {cur_tok.location[0]}, column {cur_tok.location[1]} cannot follow token {self.fderived[-1]}.")

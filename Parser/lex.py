@@ -1,7 +1,7 @@
 from codalexer import Lexer, Regex
 
 note_stages = {
-    0: ['A', 'B', 'C', 'D', 'E', 'F', 'G', '_'],
+    0: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'R'],
     1: ['#', 'b'],
     2: ['1', '2', '3', '4', '5', '6', '7']
 }
@@ -34,6 +34,7 @@ kw_typ_stages = {0: 't', 1: 'y', 2: 'p'}
 kw_rep_stages = {0: 'r', 1: 'e', 2: 'p'}
 kw_grp_stages = {0: 'g', 1: 'r', 2: 'p'}
 kw_tmp_stages = {0: 't', 1: 'm', 2: 'p'}
+rest_stages = {0: '_'}
 declarator_stages = {0: '!'}
 separator_stages = {0: ','}
 connector_stages = {0: '>', 1: '>'}
@@ -63,6 +64,7 @@ lexer.register_token(Regex('COMMENT', "['//']['A'-'Z''a'-'z']*['\n']", comment_s
 lexer.register_token(Regex('NUMBER', "['1'-'9']", num_stages, 
                            repeats=num_reps))
 lexer.register_token(Regex('DECLARATOR', "'!'", declarator_stages, single=True))
+lexer.register_token(Regex('REST', "'_'", rest_stages, single=True))
 lexer.register_token(Regex('SEPARATOR', "','", separator_stages, single=True))
 lexer.register_token(Regex('LBRACE', "'{'", lbrace_stages, single=True))
 lexer.register_token(Regex('RBRACE', "'}'", rbrace_stages, single=True))
