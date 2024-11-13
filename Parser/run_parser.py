@@ -1,5 +1,6 @@
 from lex import lexer
-from parse import Parser, parse_table
+from codaparser import Parser
+from parse import parse_table
 
 import argparse
 import sys
