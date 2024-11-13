@@ -42,7 +42,7 @@ class Parser:
                 self.derived = self.derived[1:]
                 return
             
-            print(f"Expanding '{cur_sym}'; Looking at '{cur_tok}'")
+            # print(f"Expanding '{cur_sym}'; Looking at '{cur_tok}'")
             expanded = self.ptab.get_production(cur_sym, cur_tok)
             if not expanded:
                 raise ParserException(f"SyntaxError: Token {cur_tok} on line {cur_tok.location[0]}, column {cur_tok.location[1]} cannot follow token {self.fderived[-1]}.")
@@ -78,7 +78,7 @@ class Parser:
                     self.nodestack.pop()
                     self.closestack.pop()
             else:
-                raise ParserException(f"ParseError: Failed to match {cur_tok}. Expected {cur_sym}.")
+                raise ParserException(f"SyntaxError at line {cur_tok.location[0]}, column {cur_tok.location[1]}. Expected instance of {cur_sym.token_class}, found {cur_tok.token_class}.")
 
     def print_derived(self):
         s = ""
