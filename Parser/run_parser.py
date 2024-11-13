@@ -6,7 +6,7 @@ import argparse
 import sys
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-i', '--input-file', required=True, help='Input file for lexing')
+argparser.add_argument('-i', '--input-file', required=True, help='Input file for processing')
 
 args = argparser.parse_args()
 
