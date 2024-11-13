@@ -1,0 +1,25 @@
+// Coda Parser Demo 2
+// This program contains a syntactical error.
+// There is a misplaced global flag in the middle
+// of a note sequence.
+
+// First melody line of Nocturne Opus. 9 No. 1
+!key[Bb-]
+!sig[6, 4]
+!tmp[120]
+
+typ[8] {
+Bb5>>C6>>Db6>>!>>Bb5>>Gb5
+}
+
+typ[4] rep[4]{
+    F5
+}
+
+typ[8] {
+    Gb5>>F5>>Eb5>>C6
+}
+
+typ[2] {
+    Db5
+}
