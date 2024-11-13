@@ -142,10 +142,14 @@ class TokenNodeAST:
         return f"{self.tok.text}"
 
 
-def print_ast(node, level=0):
-    print("  " * level + repr(node))
-    for child in node.children:
-        print_ast(child, level + 1)
+def print_ast(node, level=0, is_last=True, prefix=""):
+    connector = "└── " if is_last else "├── "
+    print(prefix + connector + repr(node))
+    prefix += "    " if is_last else "│   "
+    child_count = len(node.children)
+    for i, child in enumerate(node.children):
+        is_child_last = (i == child_count - 1)
+        print_ast(child, level + 1, is_child_last, prefix)
 
 
 class ParserException(Exception):
