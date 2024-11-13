@@ -13,7 +13,7 @@ Matheu Campbell (mgc2171)
 To run the lexer and parser on an input file after building in this directory, run
 `docker run --rm -v "$(pwd)"/<INPUT_FILE>:/app/<INPUT_FILE> coda-parser -i <INPUT_FILE>`
 
-To run the parser on the Examples in this folder, provide their paths as input files. Make sure to include `/Examples/` in the -v argument if running directly from this directory. For example, to run the first demo, run `docker run --rm -v "$(pwd)"/Examples/codalex_demo1.cd:/app/codaparse_demo1.cd coda-parser -i codaparse_demo1.cd`
+To run the parser on the Examples in this folder, provide their paths as input files. Make sure to include `/Examples/` in the -v argument if running directly from this directory. For example, to run the first demo, run `docker run --rm -v "$(pwd)"/Examples/codaparse_demo1.cd:/app/codaparse_demo1.cd coda-parser -i codaparse_demo1.cd`
 
 ## Coda - Contex Free Grammar Specification
 A Coda program consists of sequences of notes that may or may not be encapsulated in blocks, signified by curly braces.
