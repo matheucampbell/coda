@@ -143,9 +143,14 @@ class TokenNodeAST:
 
 
 def print_ast(node, level=0, is_last=True, prefix=""):
-    connector = "└── " if is_last else "├── "
-    print(prefix + connector + repr(node))
+    if level == 0:
+        print(repr(node))
+    else:
+        connector = "└── " if is_last else "├── "
+        print(prefix + connector + repr(node))
+    
     prefix += "    " if is_last else "│   "
+    
     child_count = len(node.children)
     for i, child in enumerate(node.children):
         is_child_last = (i == child_count - 1)
