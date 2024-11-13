@@ -7,7 +7,7 @@ Matheu Campbell (mgc2171)
 2. Navigate to the Parser subdirectory of this repository.
 3. Run `docker build -t coda-parser .` to build the Docker image.
 
-## [Demo Video](https://drive.google.com/file/d/1bHS23i4xilpNwVS3yR2_G0OGu7XA10GW/view?usp=drive_link)
+## [Demo Video](https://drive.google.com/file/d/1S9obbIDbPLUHsyKojTwoCgFLP561a4W5/view?usp=drive_link)
 
 ## Execution Steps
 To run the lexer and parser on an input file after building in this directory, run
