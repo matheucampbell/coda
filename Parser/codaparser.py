@@ -15,7 +15,7 @@ class Parser:
         self.nodables = parse_table.get_nodables()
         self.root = ProductionNodeAST("Sheet")
         self.nodestack = [self.root]
-        self.closesymbol = None  # To end a currently open
+        self.closestack = []  # To end a currently open
     
     def parse(self):
         while False in [isinstance(n, Token) for n in self.derived]:
@@ -37,11 +37,15 @@ class Parser:
                 raise ParserException(f"ParseError: No applicable production for current symbol {cur_sym} and next token {cur_tok}.")
             # print(f"Expanded to {expanded}")
             self.derived = expanded + self.derived[1:]  # Should be list of tokens and strings
+
             # Check if chosen production is nodable
             if expanded in self.nodables:
                 print("Nodable found:", expanded)
+                print("Closing symbol:", expanded[-1])
                 node = ProductionNodeAST(cur_sym)
-                self.closesymbol = expanded[-1]
+                self.nodestack[-1].add_child(node)
+                closesym = expanded[-1]
+                self.closestack.append(closesym)
                 self.nodestack.append(node)
 
         else:  # Match token
@@ -55,8 +59,13 @@ class Parser:
                 # Add as child on current node; close if necessary
                 node = TokenNodeAST(cur_tok)
                 self.nodestack[-1].add_child(node)
-                if cur_tok == self.closesymbol:
-                    self.nodestack.pop()    
+                
+                if self.closestack and cur_tok.equals(self.closestack[-1]):
+                    # print("Closing symbol found")
+                    # print("CHILDREN AT CLOSING:", self.nodestack[-1].children)
+                    # print(self.root.children)
+                    self.nodestack.pop()
+                    self.closestack.pop()
             else:  # Error
                 raise ParserException(f"ParseError: Failed to match {cur_tok}. Expected {cur_sym}")
 
@@ -120,23 +129,23 @@ class ProductionNodeAST:
         self.children.append(child)
     
     def __repr__(self):
-        return f"NodeAST<Value={self.value}>"
+        return f"{self.value}"
+
+
+class TokenNodeAST:
+    """Leaf node of AST"""
+    def __init__(self, token):
+        self.tok = token
+        self.children = []
+    
+    def __repr__(self):
+        return f"{self.tok.text}"
 
 
 def print_ast(node, level=0):
     print("  " * level + repr(node))
     for child in node.children:
         print_ast(child, level + 1)
-
-
-class TokenNodeAST:
-    """Leaf node of AST"""
-    def __init__(self, token):
-        self.value = token
-        self.children = []
-    
-    def __repr__(self):
-        return f"NodeAST<Value={self.value}>"
 
 
 class ParserException(Exception):
