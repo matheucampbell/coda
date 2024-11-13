@@ -1,5 +1,4 @@
 from codalexer import Token
-from time import sleep
 from typing import List
 
 class Parser:
@@ -80,9 +79,21 @@ class Production:
         self.rules = rules
 
 
-class AbstractSyntaxTree:
-    def __init__(self):
-        pass
+class ProductionNodeAST:
+    """AST node for a given production"""
+    def __init__(self, value):
+        self.value = value
+        self.children = []
+    
+    def add_child(self, child):
+        self.children.append(child)
+
+
+class TokenNodeAST:
+    """Leaf node of AST"""
+    def __init__(self, token):
+        self.value = token
+
 
 class ParserException(Exception):
     pass
