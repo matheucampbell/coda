@@ -22,7 +22,7 @@ the number of times the enclosed block should be repeated (rep), and how many of
 In addition to block modifiers, there are three mandatory glibal modifiers to be included before any notes or blocks are defined. These are the
 key signature, tempo, and time signature modifiers, and they apply to the entire coda sheet.
 
-The structure is captured in the following context-free grammar, with starting symbol `S`.
+The structure is captured in the following context-free grammar with starting symbol `S`.
 
 ```
 Tokens
