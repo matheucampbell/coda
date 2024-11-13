@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Parser/run_parser.py", line 24, in <module>
+    parser.parse()
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Parser/codaparser.py", line 33, in parse
+    self.advance()
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Parser/codaparser.py", line 81, in advance
+    raise ParserException(f"SyntaxError at line {cur_tok.location[0]}, column {cur_tok.location[1]}. Expected instance of {cur_sym.token_class}, found {cur_tok.token_class}.")
+codaparser.ParserException: SyntaxError at line 12, column 9. Expected instance of NUMBER, found RBRACKET.
