@@ -12,13 +12,15 @@ class Parser:
         self.ptab = parse_table
         
         # AST
+        self.nodables = parse_table.get_nodables()
         self.root = ProductionNodeAST("Sheet")
         self.nodestack = [self.root]
-        self.topnode = self.nodestack[-1]
+        self.closesymbol = None  # To end a currently open
     
     def parse(self):
         while False in [isinstance(n, Token) for n in self.derived]:
             self.advance()
+        print_ast(self.root)
 
     def advance(self):
         # self.print_derived()
@@ -36,7 +38,11 @@ class Parser:
             # print(f"Expanded to {expanded}")
             self.derived = expanded + self.derived[1:]  # Should be list of tokens and strings
             # Check if chosen production is nodable
-
+            if expanded in self.nodables:
+                print("Nodable found:", expanded)
+                node = ProductionNodeAST(cur_sym)
+                self.closesymbol = expanded[-1]
+                self.nodestack.append(node)
 
         else:  # Match token
             # print(f"Attempting to match {str(cur_tok)}")
@@ -45,6 +51,12 @@ class Parser:
                 self.derived = self.derived[1:]
                 self.pos += 1
                 # print("Matched successfully.")
+
+                # Add as child on current node; close if necessary
+                node = TokenNodeAST(cur_tok)
+                self.nodestack[-1].add_child(node)
+                if cur_tok == self.closesymbol:
+                    self.nodestack.pop()    
             else:  # Error
                 raise ParserException(f"ParseError: Failed to match {cur_tok}. Expected {cur_sym}")
 
@@ -66,9 +78,11 @@ class ParseTable:  # LL(1) Parsing
         self.entries = {}  # {(nonterminal, Token) : Production, ...}
         self.nodables = set()
 
-    def register_entry(self, coord, rhs):
+    def register_entry(self, coord, rhs, nodable=False):
         '''Add a cell to the table.'''
         self.entries[coord] = rhs  # RHS should be list of tokens or production names
+        if nodable:
+            self.nodables.add(rhs)
 
     def get_production(self, nonterm, lookahead: Token):
         '''
@@ -81,6 +95,9 @@ class ParseTable:  # LL(1) Parsing
             if e[0] == nonterm and lookahead.equals(e[1]):
                 return self.entries[e]
         return None
+    
+    def get_nodables(self):
+        return self.nodables
 
 
 class Production:
@@ -88,27 +105,38 @@ class Production:
     Represents a production rule. For special production rules that should be expanded to
     nodes in the AST, nodable=True 
     """
-    def __init__(self, symbol, rules, nodable=False, closing_symbol=None):
+    def __init__(self, symbol, rules):
         self.symbol = symbol
         self.rules = rules
-        self.nodable = nodable
 
 
 class ProductionNodeAST:
     """AST node for a given production"""
-    def __init__(self, value, closing_token=None):
+    def __init__(self, value):
         self.value = value
         self.children = []
-        self.ctoken = closing_token
     
     def add_child(self, child):
         self.children.append(child)
+    
+    def __repr__(self):
+        return f"NodeAST<Value={self.value}>"
+
+
+def print_ast(node, level=0):
+    print("  " * level + repr(node))
+    for child in node.children:
+        print_ast(child, level + 1)
 
 
 class TokenNodeAST:
     """Leaf node of AST"""
     def __init__(self, token):
         self.value = token
+        self.children = []
+    
+    def __repr__(self):
+        return f"NodeAST<Value={self.value}>"
 
 
 class ParserException(Exception):
