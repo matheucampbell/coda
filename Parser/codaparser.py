@@ -17,7 +17,7 @@ class Parser:
             self.advance()
 
     def advance(self):
-        self.print_derived()
+        # self.print_derived()
         cur_tok = self.input[self.pos]  # Token object
         cur_sym = self.derived[0]  # Token or string
         if not isinstance(cur_sym, Token):  # is a production
@@ -31,7 +31,7 @@ class Parser:
             else:
                 self.derived = self.derived[1:]
         else:  # Match token
-            print(f"Attempting to match {str(cur_tok)}")
+            # print(f"Attempting to match {str(cur_tok)}")
             if cur_tok.equals(cur_sym):
                 self.fderived.append(self.derived[0])
                 self.derived = self.derived[1:]
@@ -66,7 +66,7 @@ class ParseTable:  # LL(1) Parsing
         Returns production to take given current nonterminal and lookahead.
         If entry is not found, return None. Caller handles error.
         '''
-        print(f"Fetching: {nonterm, lookahead}")
+        # print(f"Fetching: {nonterm, lookahead}")
         for e in self.entries.keys():
             # print(e, lookahead)
             if e[0] == nonterm and lookahead.equals(e[1]):
