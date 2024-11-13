@@ -8,7 +8,7 @@
 !tmp[120]
 
 typ[8] {
-Bb5>>C6>>Db6>>A5>>Bb5>>Gb5
+    Bb5>>C6>>Db6>>A5>>Bb5>>Gb5
 }
 
 typ[4] rep[4]{
