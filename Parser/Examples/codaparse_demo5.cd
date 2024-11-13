@@ -1,0 +1,23 @@
+// Coda Parser Demo 5
+// This program contains a syntactical error on line 10.
+// The duration modifier typ is missing an argument.
+// The parser will flag this and suggest a correction.
+
+// Piano section of New York, I Love You, But You're Bringing Me Down
+!key[F-]
+!sig[6, 8]
+!tmp[165]
+
+rep[4]{
+    typ[]{
+        F+4*
+    }
+
+    typ[4]{
+        D-5*
+    }
+
+    typ[4]{
+        C#-4*
+    }
+}
