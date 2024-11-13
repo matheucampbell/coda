@@ -26,6 +26,7 @@ The structure is captured in the following context-free grammar, with starting s
 Tokens
 note | chord | rest | keysig | number | key | sig | tmp | typ | rep | grp | ! | , | > | >> | { | } [ | ]
 
+Productions
 S -> IB
 I -> !K!M!D
 K -> key[keysig]
