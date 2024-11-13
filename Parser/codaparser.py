@@ -1,6 +1,17 @@
 from codalexer import Token
 from typing import List
 
+symbol_map = {  # Maps production names to descriptions
+    '!' : 'GLOBAL FLAG',
+    'K': 'KEYSIG MODIFIER',
+    'M': 'TIMESIG MODIFIER',
+    'D': 'TEMPO MODIFIER',
+    'C': 'NOTE BLOCK',
+    'T': 'DURATION MODIFIER',
+    'R': 'REPETION MODIFIER',
+    'G': 'GROUPING MODIFIER',
+    'W': 'NOTE/CHORD'
+}
 
 class Parser:
     def __init__(self, input: List[Token], parse_table, start_sym):
@@ -13,7 +24,7 @@ class Parser:
         
         # AST
         self.nodables = parse_table.get_nodables()
-        self.root = ProductionNodeAST("Sheet")
+        self.root = ProductionNodeAST("CODA SHEET")
         self.nodestack = [self.root]
         self.closestack = []  # To end a currently open
     
@@ -42,7 +53,7 @@ class Parser:
             if expanded in self.nodables:
                 print("Nodable found:", expanded)
                 print("Closing symbol:", expanded[-1])
-                node = ProductionNodeAST(cur_sym)
+                node = ProductionNodeAST(symbol_map[cur_sym])
                 self.nodestack[-1].add_child(node)
                 closesym = expanded[-1]
                 self.closestack.append(closesym)
