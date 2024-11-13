@@ -1,0 +1,26 @@
+// Coda Parser Demo 4
+// This program is syntactically correct, and it includes
+// some notes that are not encapsulated within a note block or
+// subject to any modifiers.
+
+// Piano section of New York, I Love You, But You're Bringing Me Down
+!key[F-]
+!sig[6, 8]
+!tmp[165]
+
+rep[4]{
+    typ[8]{
+        F+4*
+    }
+
+    typ[4]{
+        D-5*
+    }
+
+    typ[4]{
+        C#-4*
+    }
+}
+
+// Melody line
+A4>>A4>>F4>>A4>>F4>>_>>_>>F4>>F4>>A4>>A4>>A4>>F4
