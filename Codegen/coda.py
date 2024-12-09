@@ -6,7 +6,7 @@ import argparse
 import sys
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-i', '--input-file', required=True, help='Input file for processing')
+argparser.add_argument('-i', '--input-file', required=True, help='Input file for MIDI conversion.')
 
 args = argparser.parse_args()
 
@@ -24,3 +24,6 @@ parser = Parser(token_list, parse_table, 'S')
 parser.parse()
 
 # Code Generation
+ast_root = parser.root
+
+

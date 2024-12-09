@@ -19,7 +19,7 @@ To run the parser on the Examples in this folder, provide their paths as input f
 A Coda program consists of sequences of notes that may or may not be encapsulated in blocks, signified by curly braces.
 The author can specify properties of the notes within blocks using modifiers, which change the duration of enclosed notes (typ),
 the number of times the enclosed block should be repeated (rep), and how many of the notes should be grouped and played at once (grp).
-In addition to block modifiers, there are three mandatory glibal modifiers to be included before any notes or blocks are defined. These are the
+In addition to block modifiers, there are three mandatory global modifiers to be included before any notes or blocks are defined. These are the
 key signature, tempo, and time signature modifiers, and they apply to the entire coda sheet.
 
 The structure is captured in the following context-free grammar with starting symbol `S`.
