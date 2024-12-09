@@ -8,7 +8,7 @@ symbol_map = {  # Maps production names to descriptions
     'D': 'TEMPO MODIFIER',
     'C': 'NOTE BLOCK',
     'T': 'DURATION MODIFIER',
-    'R': 'REPETION MODIFIER',
+    'R': 'REPETITION MODIFIER',
     'G': 'GROUPING MODIFIER',
     'W': 'NOTE/CHORD/REST'
 }

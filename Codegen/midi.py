@@ -39,6 +39,12 @@ class TrackChunk:
         self.tpq = tpq
         self.rest_ticks = 0  # For properly tracking rests
 
+    def add(self, item, dur):
+        if item.token_class == "CHORD":
+            self.add_chord(item, dur)
+        else:
+            self.add_note(item, dur)
+
     def add_note(self, note, dur):
         '''Adds a note (in string format) for a given duration (in beats)'''
         ticks_duration = int(dur*self.tpq)  # Convert beats to ticks
@@ -114,7 +120,30 @@ NOTE_MAP = {
 
 # Chord Map - Maps chords to lists of notes from C1 to C5 (supports major and minor | Ex. C-sharp major = C#+ and C-flat minor = ex. Cb-)
 CHORD_MAP = {
-
+    "C+": ["C", "E", "G"],
+    "C-": ["C", "Eb", "G"],
+    "C#+": ["C#", "F", "G#"],
+    "C#-": ["C#", "E", "G#"],
+    "D+": ["D", "F#", "A"],
+    "D-": ["D", "F", "A"],
+    "D#+": ["D#", "G", "A#"],
+    "D#-": ["D#", "F#", "A#"],
+    "E+": ["E", "G#", "B"],
+    "E-": ["E", "G", "B"],
+    "F+": ["F", "A", "C"],
+    "F-": ["F", "Ab", "C"],
+    "F#+": ["F#", "A#", "C#"],
+    "F#-": ["F#", "A", "C#"],
+    "G+": ["G", "B", "D"],
+    "G-": ["G", "Bb", "D"],
+    "G#+": ["G#", "C", "D#"],
+    "G#-": ["G#", "B", "D#"],
+    "A+": ["A", "C#", "E"],
+    "A-": ["A", "C", "E"],
+    "A#+": ["A#", "D", "F"],
+    "A#-": ["A#", "C#", "F"],
+    "B+": ["B", "D#", "F#"],
+    "B-": ["B", "D", "F#"]
 }
 
 nseq = ['F4', 'G#4', '_', 'F4']
