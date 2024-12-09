@@ -101,7 +101,7 @@ class TrackChunk:
         chunk_length = len(self.events)
         return struct.pack(">4sI", self.ID, chunk_length) + self.events
 
-class Generator:
+class MidiGenerator:
     def __init__(self, tempo, note_seq, dur_seq, tpq=480):
         self.header = HeaderChunk(tpq)
         self.track = TrackChunk(tpq)
@@ -188,5 +188,5 @@ nseq = [Token('NOTE', 'F4'), Token('CHORD', 'A#+5*'), Token('NOTE', 'F4'), Token
 dseq = [1, 1, 1, 1]
 tempo = 120
 
-gen = Generator(tempo, nseq, dseq)
+gen = MidiGenerator(tempo, nseq, dseq)
 gen.generate('demo')
