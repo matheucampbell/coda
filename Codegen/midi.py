@@ -1,7 +1,5 @@
 import struct
 
-# Format Specification: https://www.music.mcgill.ca/~ich/classes/mumt306/StandardMIDIfileformat.html#BM0_
-
 def encode_vlq(value):
     '''Encodes an integer into a Variable-Length Quantity (VLQ)'''
     buffer = value & 0x7F
@@ -17,71 +15,73 @@ def encode_vlq(value):
             break
     return bytes(vlq)
 
-def convert_tempo(tempo):
-    '''Converts tempo in bpm to ticks per quarter-note'''
-    tpq = 480  # Typical, but varies
-    microseconds_per_beat = 60000000 / tempo  # microseconds per beat (1 minute / BPM)
-    ticks_per_quarter_note = microseconds_per_beat / (60000000 / tpq)  # microseconds_per_beat / microseconds_per_tick
-
-    return int(ticks_per_quarter_note)
-
-
 class HeaderChunk:
-    '''MIDI header chunk'''
+    '''MIDI Header Chunk'''
     ID = b"MThd"
-    def __init__(self, tempo):
+    def __init__(self, tpq=480):
         self.fmt = 0
         self.ntracks = 1
-        self.div = convert_tempo(tempo)
+        self.div = tpq
 
     def bytes(self):
-        '''Returns the 14-bit binary equivalent of header'''
+        '''Returns the binary representation of the header chunk'''
         chunk_length = 6
         fmt = self.fmt
         ntracks = self.ntracks
         div = self.div
-
         return struct.pack('>4sIHHH', self.ID, chunk_length, fmt, ntracks, div)
-
 
 class TrackChunk:
     '''MIDI Track Chunk'''
     ID = b"MTrk"
     def __init__(self, tpq=480):
-        self.notes = b""
+        self.events = b""
         self.tpq = tpq
 
     def add_note(self, note, dur):
         '''Adds a note (in string format) for a given duration (in beats)'''
         note_number = NOTE_MAP[note]
         ticks_duration = int(dur * self.tpq)  # Convert beats to ticks
-        
-        # Encode delta time for the note-on event
-        self.notes += struct.pack(">B", 0)
-        self.notes += struct.pack(">BBB", 0x90, note_number, 64)  # Note-on (velocity 64)
-        
-        # Encode delta time for the note-off event
-        self.notes += encode_vlq(ticks_duration)  # Delta time (variable length)
-        self.notes += struct.pack(">BB", 0x80, note_number)  # Note-off (velocity 0)
 
-    def add_chord(self, notes, dur):
-        pass
-    
+        # Note-on event
+        self.events += struct.pack(">B", 0)  # Delta time: 0
+        self.events += struct.pack(">BBB", 0x90, note_number, 64)  # Note-on (velocity 64)
+
+        # Note-off event
+        self.events += encode_vlq(ticks_duration)  # Delta time
+        self.events += struct.pack(">BBB", 0x80, note_number, 0)  # Note-off (velocity 0)
+
+    def add_meta_event(self, meta_type, data):
+        '''Adds a meta event'''
+        self.events += struct.pack(">B", 0)  # Delta time: 0
+        self.events += struct.pack(">BB", 0xFF, meta_type)  # Meta type
+        self.events += struct.pack(">B", len(data)) + data  # Meta event length and data
+
+    def end_track(self):
+        '''Adds the End of Track meta-event'''
+        self.add_meta_event(0x2F, b"")
+
     def bytes(self):
-        header = self.ID + struct.pack(">I", len(self.notes))
-        return header + self.notes
-
+        '''Returns the binary representation of the track chunk'''
+        chunk_length = len(self.events)
+        return struct.pack(">4sI", self.ID, chunk_length) + self.events
 
 class Generator:
-    def __init__(self, tempo, note_seq, dur_seq):
-        self.header = HeaderChunk(tempo)
-        self.track = TrackChunk()
+    def __init__(self, tempo, note_seq, dur_seq, tpq=480):
+        self.header = HeaderChunk(tpq)
+        self.track = TrackChunk(tpq)
         self.note_seq = note_seq
         self.dur_seq = dur_seq
+        self.tempo = tempo
     
     def generate(self, fname):
+        tempo_data = struct.pack(">I", int(60000000 / self.tempo))[1:]
+        self.track.add_meta_event(0x51, tempo_data)
+
         for num, note in enumerate(self.note_seq):
             self.track.add_note(note, self.dur_seq[num])
+
+        self.track.end_track()
 
         with open(f'{fname}.mid', "wb") as midi:
             midi.write(self.header.bytes())
@@ -107,9 +107,9 @@ CHORD_MAP = {
 
 }
 
-nseq = ['F4', 'A#4', 'F4']
-dseq = [2, 2, 2]
-tempo = 120
+nseq = ['F4', 'G#4', 'F4']
+dseq = [1, 1, 1]
+tempo = 240
 
 gen = Generator(tempo, nseq, dseq)
 gen.generate('demo')
