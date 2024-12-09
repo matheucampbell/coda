@@ -185,7 +185,6 @@ CHORD_MAP = {
 
 from parse import Token
 nseq = [Token('NOTE', 'F4'), Token('CHORD', 'A#+5*'), Token('NOTE', 'F4'), Token('NOTE', 'F4')]
-# nseq = [Token('CHORD', 'A#+5*')]
 dseq = [1, 1, 1, 1]
 tempo = 120
 
