@@ -1,12 +1,14 @@
 from lex import lexer
 from codaparser import Parser
 from parse import parse_table
+from codagen import CodaGenerator
 
 import argparse
 import sys
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument('-i', '--input-file', required=True, help='Input file for MIDI conversion.')
+argparser.add_argument('-o', '--output-file', default='output', help='Output file name')
 
 args = argparser.parse_args()
 
@@ -25,5 +27,5 @@ parser.parse()
 
 # Code Generation
 ast_root = parser.root
-
-
+gen = CodaGenerator(ast_root, args.output_file)
+gen.generate()
