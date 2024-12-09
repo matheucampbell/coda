@@ -37,15 +37,21 @@ class TrackChunk:
     def __init__(self, tpq=480):
         self.events = b""
         self.tpq = tpq
+        self.rest_ticks = 0  # For properly tracking rests
 
     def add_note(self, note, dur):
         '''Adds a note (in string format) for a given duration (in beats)'''
-        note_number = NOTE_MAP[note]
-        ticks_duration = int(dur * self.tpq)  # Convert beats to ticks
+        ticks_duration = int(dur*self.tpq)  # Convert beats to ticks
 
+        if note == '_':  # On rest, increment current delay and continue
+            self.rest_ticks += int(dur*self.tpq)
+            return
+
+        note_number = NOTE_MAP[note]
         # Note-on event
-        self.events += struct.pack(">B", 0)  # Delta time: 0
+        self.events += encode_vlq(self.rest_ticks)  # For proper rest behavior
         self.events += struct.pack(">BBB", 0x90, note_number, 64)  # Note-on (velocity 64)
+        self.rest_ticks = 0
 
         # Note-off event
         self.events += encode_vlq(ticks_duration)  # Delta time
@@ -107,9 +113,9 @@ CHORD_MAP = {
 
 }
 
-nseq = ['F4', 'G#4', 'F4']
-dseq = [1, 1, 1]
-tempo = 240
+nseq = ['F4', 'G#4', '_', 'F4']
+dseq = [1, 1, 1, 1]
+tempo = 120
 
 gen = Generator(tempo, nseq, dseq)
 gen.generate('demo')
