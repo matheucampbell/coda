@@ -46,7 +46,7 @@ class TrackChunk:
             self.add_note(item, dur)
 
     def add_note(self, note, dur):
-        '''Adds a note for a given duration (in beats)'''
+        '''Adds a note (as an object of class Token) for a given duration (in beats)'''
         note = note.text
         ticks_duration = int(dur*self.tpq)  # Convert beats to ticks
 
@@ -65,22 +65,26 @@ class TrackChunk:
         self.events += struct.pack(">BBB", 0x80, note_number, 0)  # Note-off (velocity 0)
     
     def add_chord(self, chord, dur):
-        '''Adds a chord (in string format) for a given duration (in beats)'''
+        '''Adds a chord (as an object class Token) for a given duration (in beats)'''
         chord = chord.text  # Ex: C+5*
         base, oct = chord[:-2], chord[-2]
         notes = CHORD_MAP[base]  # ["C", "E", "G"]
 
-        self.events += encode_vlq(self.rest_ticks)
-        for note in notes[1:]:  # Add all notes at the same time
-            note_num = NOTE_MAP[note+oct]
-            self.events += struct.pack(">BBB", 0x90, note_num, 64)
+        self.events += encode_vlq(self.rest_ticks)  # Apply rest before playing the chord
+        self.events += struct.pack(">BBB", 0x90, NOTE_MAP[notes[0]+oct], 64)
+        for note in notes[1:]:
+            note_num = NOTE_MAP[note + oct]
+            self.events += encode_vlq(0)  # Same time as other notes
+            self.events += struct.pack(">BBB", 0x90, note_num, 64)  # Note-on, velocity 64
+
         self.rest_ticks = 0
 
-        self.events += encode_vlq(int(dur*self.tpq))  # Delta time
-        for note in notes:  # Stop all notes at once
-            note_num = NOTE_MAP[note+oct]
-            self.events += struct.pack(">BBB", 0x80, note_num, 0)  # Note-off (velocity 0)
-
+        self.events += encode_vlq(int(dur * self.tpq))  # Delta time for chord duration
+        self.events += struct.pack(">BBB", 0x80, NOTE_MAP[notes[0]+oct], 0)
+        for note in notes[1:]:
+            note_num = NOTE_MAP[note + oct]
+            self.events += encode_vlq(0)
+            self.events += struct.pack(">BBB", 0x80, note_num, 0)  # Note-off, velocity 0
 
     def add_meta_event(self, meta_type, data):
         '''Adds a meta event'''
@@ -181,8 +185,8 @@ CHORD_MAP = {
 
 from parse import Token
 nseq = [Token('NOTE', 'F4'), Token('CHORD', 'A#+5*'), Token('NOTE', 'F4'), Token('NOTE', 'F4')]
-nseq = [Token('CHORD', 'A#+5*')]
-dseq = [1]
+# nseq = [Token('CHORD', 'A#+5*')]
+dseq = [1, 1, 1, 1]
 tempo = 120
 
 gen = Generator(tempo, nseq, dseq)
