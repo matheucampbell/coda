@@ -56,6 +56,10 @@ class TrackChunk:
         # Note-off event
         self.events += encode_vlq(ticks_duration)  # Delta time
         self.events += struct.pack(">BBB", 0x80, note_number, 0)  # Note-off (velocity 0)
+    
+    def add_chord(self, chord, dur):
+        '''Adds a chord (in string format) for a given duration (in beats)'''
+        pass
 
     def add_meta_event(self, meta_type, data):
         '''Adds a meta event'''
