@@ -28,10 +28,11 @@ class Parser:
         self.nodestack = [self.root]
         self.closestack = []  # To end a currently open
     
-    def parse(self):
+    def parse(self, print_result=False):
         while False in [isinstance(n, Token) for n in self.derived]:
             self.advance()
-        print_ast(self.root)
+        if print_result:
+            print_ast(self.root)
 
     def advance(self):
         # self.print_derived()
