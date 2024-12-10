@@ -7,6 +7,8 @@ Matheu Campbell (mgc2171)
 2. Navigate to the Parser subdirectory of this repository.
 3. Run `docker build -t coda .` to build the Docker image.
 
+## [Demo Video](https://drive.google.com/file/d/1OQQKegUaFeO91pvcVpvOBuJhmtVPxf2B/view?usp=sharing)
+
 ## Execution Steps
 To fully compile a Coda program on an input file after building in this directory, run `docker run --rm -v "$(pwd)"/<INPUT_FILE>:/app/<INPUT_FILE> coda -i <INPUT_FILE> -o <OUTPUT_FILENAME>`
 
@@ -30,3 +32,5 @@ Notes, chords, keys, and groups are specified according to the README found in t
 
 ## Optimizations
 Coda correctly processes groups of notes larger than 3 which are not standard major/minor triads into chord structures and expands them automatically, allowing user flexibility and efficient execution.
+
+## 
