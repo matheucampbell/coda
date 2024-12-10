@@ -8,3 +8,6 @@ Matheu Campbell (mgc2171)
 3. Run `docker build -t coda .` to build the Docker image.
 
 ## Execution Steps
+To fully compile a Coda program on an input file after building in this directory, run `docker run --rm -v "$(pwd)"/<INPUT_FILE>:/app/<INPUT_FILE> coda -i <INPUT_FILE> -o <OUTPUT_FILENAME>`
+
+To run the parser on the Examples in this folder, provide their paths as input files. Make sure to include `/Examples/` in the -v argument if running directly from this directory. For example, to run the first demo, run `docker run --rm -v "$(pwd)"/Examples/codaparse_demo1.cd:/app/coda_demo1.cd coda-parser -i codaparse_demo1.cd`

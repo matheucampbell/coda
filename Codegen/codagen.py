@@ -1,4 +1,4 @@
-from codaparser import TokenNodeAST, ProductionNodeAST
+from codaparser import TokenNodeAST
 from midi import MidiGenerator
 
 class CodaGenerator:
@@ -6,11 +6,12 @@ class CodaGenerator:
         self.root = ast_root
         self.outname = outname
         self.typstack = [1]
-        # self.repstack = []
-        # self.grpstack = []
         self.keysig = None
         self.timesig = None
         self.tempo = None
+
+        self.globaltyp = 1
+        self.globalrep = 1
     
     def generate(self):
         tokens, durations = self.get_sequences()
