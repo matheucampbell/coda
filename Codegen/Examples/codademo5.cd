@@ -1,0 +1,26 @@
+// Coda Parser Demo 5
+
+// All Star
+!key[A+]
+!sig[4, 4]
+!tmp[250]
+
+typ[2] {
+    E4
+}
+
+typ[1] {
+    B4>>G#4
+}
+
+typ[2]{
+    G#4
+}
+
+typ[1] {
+    F#4>>E4>>E4>>A4>>_>>G#4>>G#4>>F#4>>F#4
+}
+
+typ[2] {
+    E4
+}
