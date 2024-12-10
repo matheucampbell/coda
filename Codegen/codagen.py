@@ -32,7 +32,7 @@ class CodaGenerator:
 
         # TODO: Proceed through the rest of the tree and find all global identifiers 
 
-        return self.root.children[7]
+        return self.root.children[6]
 
     def parse_block(self, node, typ, rep, grp):
         '''Parse a note block'''
