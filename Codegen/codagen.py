@@ -32,8 +32,10 @@ class CodaGenerator:
         '''Extract global identifiers. Treat the rest of the program as one note block.'''
         # Can hardcode locations of global identifiers
         self.keysig = self.root.children[1].children[2]
-        self.timesig = [self.root.children[3], self.root.children[5]]
+        self.timesig = [self.root.children[3].children[2], self.root.children[3].children[4]]
         self.tempo = self.root.children[5].children[2]
+        # print(self.keysig, self.timesig, self.tempo)
+        # print(type(self.keysig), type(self.timesig), type(self.tempo))
 
     def parse_block(self, node):
         '''Parse a note block'''
