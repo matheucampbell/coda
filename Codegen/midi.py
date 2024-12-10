@@ -158,7 +158,7 @@ class MidiGenerator:
 
         self.track.end_track()
 
-        with open(f'{fname}.mid', "wb") as midi:
+        with open(f'{fname}.midi', "wb") as midi:
             midi.write(self.header.bytes())
             midi.write(self.track.bytes())
 
