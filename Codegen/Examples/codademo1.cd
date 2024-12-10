@@ -3,7 +3,7 @@
 // First melody line of Nocturne Opus. 9 No. 1
 !key[Bb-]
 !sig[6, 4]
-!tmp[120]
+!tmp[180]
 
 typ[1] {
     Bb5>>C6>>Db6>>A5>>Bb5>>Gb5
@@ -14,7 +14,7 @@ typ[2] rep[4]{
 }
 
 typ[1] {
-    Gb5>>F5>>Eb5>>C6
+    Gb5>>F5>>Eb5>>C4
 }
 
 typ[4] {

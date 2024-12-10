@@ -45,10 +45,10 @@ class CodaGenerator:
 
         note_seq, dur_seq = [], []
 
-        print("NODE: ", node, node.children)
-        print(f"CURRENT MODS | typ: {self.typstack[-1]} | rep: {rep} | grp: {grp}")
+        # print("NODE: ", node, node.children)
+        # print(f"CURRENT MODS | typ: {self.typstack[-1]} | rep: {rep} | grp: {grp}")
         for child in node.children:
-            print(f"\tChecking: {child}")
+            # print(f"\tChecking: {child}")
             if isinstance(child, TokenNodeAST):
                 if child.tok.token_class != 'CHORD' and child.tok.token_class != 'NOTE':
                     continue
@@ -62,7 +62,6 @@ class CodaGenerator:
                     grp = int(child.children[2].tok.text)
                 elif child.value == 'NOTE/CHORD/REST':
                     # Use current duration modifier to add values to notes
-                    print(f"Appending {child.children[0].tok}")
                     note_seq.append(child.children[0].tok)
                     dur_seq.append(self.typstack[-1])
             else:
