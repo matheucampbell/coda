@@ -1,0 +1,20 @@
+// Coda Parser Demo 3
+
+// Piano section of New York, I Love You, But You're Bringing Me Down
+!key[F-]
+!sig[6, 8]
+!tmp[165]
+
+rep[4]{
+    typ[8]{
+        F+4*
+    }
+
+    typ[4]{
+        D-5*
+    }
+
+    typ[4]{
+        C#+5*
+    }
+}
