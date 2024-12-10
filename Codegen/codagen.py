@@ -18,12 +18,8 @@ class CodaGenerator:
     
     def get_sequences(self):
         '''Parses AST to generate input for MidiGenerator'''
-        # 1. Pass 1: Get global identifiers
+        # 1. Step 1: Get global modifiers
         next_node = self.get_globals()
-
-        return [], []
-        import sys
-        sys.exit()
 
         # 2. Track current modifiers on relevant stacks and recursively process note blocks
         # Stacks initialized to typ=1, rep=1, grp=1
@@ -34,14 +30,16 @@ class CodaGenerator:
         self.keysig = self.root.children[1].children[2]
         self.timesig = [self.root.children[3].children[2], self.root.children[3].children[4]]
         self.tempo = self.root.children[5].children[2]
-        # print(self.keysig, self.timesig, self.tempo)
-        # print(type(self.keysig), type(self.timesig), type(self.tempo))
+
+        # TODO: Proceed through the rest of the tree and find all global identifiers 
+
+        return self.root.children[7]
 
     def parse_block(self, node):
         '''Parse a note block'''
-        # typ not None -> All notes have specified duration
-        # rep not None -> Entire block repeated as specified
-        # grp not None -> Group first n notes in block
+        # typ[n] -> All notes have specified duration
+        # rep[n] -> Entire block repeated as specified
+        # grp[n] -> Group first n notes in block
         note_seq = []
         dur_seq = []
 
