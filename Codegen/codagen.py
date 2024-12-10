@@ -31,8 +31,6 @@ class CodaGenerator:
         self.timesig = [self.root.children[3].children[2], self.root.children[3].children[4]]
         self.tempo = int(self.root.children[5].children[2].tok.text)
 
-        # TODO: Proceed through the rest of the tree and find all global identifiers 
-
     def parse_block(self, node):
         '''Parse a note block'''
         # typ[n] -> All notes have specified duration
