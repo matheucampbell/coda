@@ -1,4 +1,4 @@
-// Coda Lexer Demo 5
+// Coda Lexer Demo 4
 // With multiple errors, the lexer will stop on the first error encountered.
 // This program contains multiple issues, but lexing stops at the first.
 // Errors on line 10, 15, and 19

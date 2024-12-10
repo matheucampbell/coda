@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Codegen/coda.py", line 26, in <module>
+    parser.parse()
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Codegen/codaparser.py", line 33, in parse
+    self.advance()
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Codegen/codaparser.py", line 49, in advance
+    raise ParserException(f"SyntaxError: Token {cur_tok} on line {cur_tok.location[0]}, column {cur_tok.location[1]} cannot follow token {self.fderived[-1]}.")
+codaparser.ParserException: SyntaxError: Token <DECLARATOR, VALUE='!', VALID=True> on line 12, column 19 cannot follow token <CONNECTOR, VALUE='>>', VALID=True>.

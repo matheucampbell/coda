@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Codegen/coda.py", line 17, in <module>
+    lexer.tokenize(args.input_file)
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Codegen/codalexer.py", line 117, in tokenize
+    self.exec_dfa()
+  File "/mnt/c/Users/mathe/Documents/School/Semester 7/Programming Languages and Translators/coda/Codegen/codalexer.py", line 160, in exec_dfa
+    raise LexerException(f"Malformed token found. For {csugg.token_class} token, correct stage {csugg.fails[0]} of input on line {line}, column {col}: {inp_slice}")
+codalexer.LexerException: Malformed token found. For KEYWORD token, correct stage 2 of input on line 10, column 5: 'ty[]{
+    ...'
