@@ -85,6 +85,25 @@ class TrackChunk:
             note_num = NOTE_MAP[note + oct]
             self.events += encode_vlq(0)
             self.events += struct.pack(">BBB", 0x80, note_num, 0)  # Note-off, velocity 0
+    
+    def add_group(self, notelist, dur):  # notes in list encoded in same format as in add_note
+        notelist = [n.text for n in notelist]
+
+        self.events += encode_vlq(self.rest_ticks)  # Apply rest before playing the chord
+        self.events += struct.pack(">BBB", 0x90, NOTE_MAP[notelist[0]], 64)
+        for note in notelist[1:]:
+            note_num = NOTE_MAP[note]
+            self.events += encode_vlq(0)  # Same time as other notes
+            self.events += struct.pack(">BBB", 0x90, note_num, 64)  # Note-on, velocity 64
+
+        self.rest_ticks = 0
+
+        self.events += encode_vlq(int(dur * self.tpq))  # Delta time for chord duration
+        self.events += struct.pack(">BBB", 0x80, NOTE_MAP[notelist[0]], 0)
+        for note in notelist[0]:
+            note_num = NOTE_MAP[note + oct]
+            self.events += encode_vlq(0)
+            self.events += struct.pack(">BBB", 0x80, note_num, 0)  # Note-off, velocity 0
 
     def add_meta_event(self, meta_type, data):
         '''Adds a meta event'''
