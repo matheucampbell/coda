@@ -28,7 +28,7 @@ class CodaGenerator:
         # Can hardcode locations of global identifiers
         self.keysig = self.root.children[1].children[2]
         self.timesig = [self.root.children[3].children[2], self.root.children[3].children[4]]
-        self.tempo = self.root.children[5].children[2]
+        self.tempo = int(self.root.children[5].children[2].tok.text)
 
         # TODO: Proceed through the rest of the tree and find all global identifiers 
 
@@ -67,13 +67,14 @@ class CodaGenerator:
                     next_grp = child.children[2]
                 elif child.value == 'NOTE/CHORD/REST':
                     # Use current duration modifier to add values to notes
-                    note_seq.append(child.children[0])
+                    print(f"Appending {child.children[0].tok}")
+                    note_seq.append(child.children[0].tok)
                     dur_seq.append(self.typstack[-1])
             else:
                 ns, ds = self.parse_block(node, next_typ, next_rep, next_grp)
                 note_seq += ns
                 dur_seq += ds
-        
+
         note_seq = note_seq * self.repstack[-1]
         dur_seq = dur_seq * self.repstack[-1]
 
