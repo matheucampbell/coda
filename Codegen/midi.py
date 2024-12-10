@@ -98,7 +98,6 @@ class TrackChunk:
                 expanded_notes.append(n.text)
 
         notelist = expanded_notes
-        print(notelist)
 
         self.events += encode_vlq(self.rest_ticks)  # Apply rest before playing the chord
         self.events += struct.pack(">BBB", 0x90, NOTE_MAP[notelist[0]], 64)
@@ -146,7 +145,6 @@ class MidiGenerator:
         skipped = []
         dur_ind = 0
         for num, note in enumerate(self.note_seq):
-            print(skipped)
             if num in skipped:
                 continue
 
