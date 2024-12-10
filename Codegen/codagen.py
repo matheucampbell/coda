@@ -40,14 +40,15 @@ class CodaGenerator:
         # Update stacks with current level's modifiers
         self.typstack.append(self.typstack[-1])  # typ inherited from outer blocks
         rep = 1
-        grp = 1
+        grp = 0
+        gcount = 0  # Number of elements counted for the group
 
         note_seq, dur_seq = [], []
 
-        # print("NODE: ", node, node.children)
-        # print(f"CURRENT MODS | typ: {self.typstack[-1]} | rep: {rep} | grp: {grp}")
+        print("NODE: ", node, node.children)
+        print(f"CURRENT MODS | typ: {self.typstack[-1]} | rep: {rep} | grp: {grp}")
         for child in node.children:
-            # print(f"\tChecking: {child}")
+            print(f"\tChecking: {child}")
             if isinstance(child, TokenNodeAST):
                 if child.tok.token_class != 'CHORD' and child.tok.token_class != 'NOTE':
                     continue
@@ -58,11 +59,15 @@ class CodaGenerator:
                 elif child.value == 'REPETITION MODIFIER':
                     rep = int(child.children[2].tok.text)
                 elif child.value == 'GROUPING MODIFIER':
-                    grp = int(child.children[2].tok.text)
+                    print("GROUP FOUND")
+                    grp = int(child.children[2].tok.text)  # Next note block should be grouped
                 elif child.value == 'NOTE/CHORD/REST':
                     # Use current duration modifier to add values to notes
                     note_seq.append(child.children[0].tok)
                     dur_seq.append(self.typstack[-1])
+                    if grp:
+                        gcount += 1
+                        print("\tINCREMENTING")
             else:
                 ns, ds = self.parse_block(child)
                 note_seq += ns
@@ -70,6 +75,8 @@ class CodaGenerator:
 
         note_seq = note_seq * rep
         dur_seq = dur_seq * rep
+        if grp:
+            note_seq.insert(0, gcount)
 
         self.typstack.pop()
 

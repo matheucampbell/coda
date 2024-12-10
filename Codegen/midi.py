@@ -223,10 +223,10 @@ CHORD_MAP = {
     "B-": ["B", "D", "F#"]
 }
 
-from parse import Token
-nseq = [Token('NOTE', 'F4'), Token('CHORD', 'C+5*'), 2, Token('CHORD', 'C+5*'), Token('NOTE', 'B5')]
-dseq = [1, 1, 3]
-tempo = 120
+# from parse import Token
+# nseq = [Token('NOTE', 'F4'), Token('CHORD', 'C+5*'), 2, Token('CHORD', 'C+5*'), Token('NOTE', 'B5')]
+# dseq = [1, 1, 3]
+# tempo = 120
 
-gen = MidiGenerator(tempo, nseq, dseq)
-gen.generate('demo')
+# gen = MidiGenerator(tempo, nseq, dseq)
+# gen.generate('demo')
