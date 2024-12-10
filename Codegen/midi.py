@@ -132,8 +132,16 @@ class MidiGenerator:
         tempo_data = struct.pack(">I", int(60000000 / self.tempo))[1:]
         self.track.add_meta_event(0x51, tempo_data)
 
+        skipped = []
         for num, note in enumerate(self.note_seq):
-            self.track.add(note, self.dur_seq[num])
+            if num in skipped:
+                continue
+            if not isinstance(note, int):
+                self.track.add(note, self.dur_seq[num])
+            else:  # is a group; value says number of notes to include
+                cnt = note
+                self.track.add_group(self.dur_seq[num+1:num+cnt])
+                skipped += [r for r in range(num+1, num+cnt)]
 
         self.track.end_track()
 
