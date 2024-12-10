@@ -5,7 +5,7 @@
 !sig[6, 8]
 !tmp[165]
 
-rep[4]{
+rep[1]{
     typ[12]{
         F+4*
     }
@@ -17,4 +17,9 @@ rep[4]{
     typ[6] grp[4]{
         Db4 F4 Ab4 Db5
     }
+}
+
+// Melody line
+typ[1]{
+    A4>>A4>>F4>>A4>>F4>>_>>_>>F4>>F4>>A4>>A4>>A4>>F4
 }
