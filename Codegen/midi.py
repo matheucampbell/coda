@@ -88,6 +88,7 @@ class TrackChunk:
     
     def add_group(self, notelist, dur):  # notes in list encoded in same format as in add_note
         notelist = [n.text for n in notelist]
+        print(notelist)
 
         self.events += encode_vlq(self.rest_ticks)  # Apply rest before playing the chord
         self.events += struct.pack(">BBB", 0x90, NOTE_MAP[notelist[0]], 64)
@@ -100,8 +101,8 @@ class TrackChunk:
 
         self.events += encode_vlq(int(dur * self.tpq))  # Delta time for chord duration
         self.events += struct.pack(">BBB", 0x80, NOTE_MAP[notelist[0]], 0)
-        for note in notelist[0]:
-            note_num = NOTE_MAP[note + oct]
+        for note in notelist[1:]:
+            note_num = NOTE_MAP[note]
             self.events += encode_vlq(0)
             self.events += struct.pack(">BBB", 0x80, note_num, 0)  # Note-off, velocity 0
 
@@ -133,15 +134,19 @@ class MidiGenerator:
         self.track.add_meta_event(0x51, tempo_data)
 
         skipped = []
+        dur_ind = 0
         for num, note in enumerate(self.note_seq):
+            print(skipped)
             if num in skipped:
                 continue
+
             if not isinstance(note, int):
-                self.track.add(note, self.dur_seq[num])
+                self.track.add(note, self.dur_seq[dur_ind])
             else:  # is a group; value says number of notes to include
                 cnt = note
-                self.track.add_group(self.dur_seq[num+1:num+cnt])
-                skipped += [r for r in range(num+1, num+cnt)]
+                self.track.add_group(self.note_seq[num+1:num+1+cnt], self.dur_seq[num])
+                skipped += [r for r in range(num+1, num+1+cnt)]
+            dur_ind += 1
 
         self.track.end_track()
 
@@ -211,8 +216,8 @@ CHORD_MAP = {
 }
 
 from parse import Token
-nseq = [Token('NOTE', 'F4'), Token('CHORD', 'A#+5*'), Token('NOTE', 'F4'), Token('NOTE', 'F4')]
-dseq = [1, 1, 1, 1]
+nseq = [Token('NOTE', 'F4'), Token('CHORD', 'A#+5*'), 2, Token('NOTE', 'F4'), Token('NOTE', 'A#4')]
+dseq = [1, 1, 2]
 tempo = 120
 
 gen = MidiGenerator(tempo, nseq, dseq)
