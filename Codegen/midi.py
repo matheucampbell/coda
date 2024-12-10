@@ -87,7 +87,17 @@ class TrackChunk:
             self.events += struct.pack(">BBB", 0x80, note_num, 0)  # Note-off, velocity 0
     
     def add_group(self, notelist, dur):  # notes in list encoded in same format as in add_note
-        notelist = [n.text for n in notelist]
+        # First expand any chords in the notelist
+        expanded_notes = []
+        for n in notelist:
+            if n.text[-1] == '*':  # Is a chord
+                base, oct = n.text[:-2], n.text[-2]
+                bases = CHORD_MAP[base]
+                expanded_notes += [b+oct for b in bases]
+            else:
+                expanded_notes.append(n.text)
+
+        notelist = expanded_notes
         print(notelist)
 
         self.events += encode_vlq(self.rest_ticks)  # Apply rest before playing the chord
@@ -216,8 +226,8 @@ CHORD_MAP = {
 }
 
 from parse import Token
-nseq = [Token('NOTE', 'F4'), Token('CHORD', 'A#+5*'), 2, Token('NOTE', 'F4'), Token('NOTE', 'A#4')]
-dseq = [1, 1, 2]
+nseq = [Token('NOTE', 'F4'), Token('CHORD', 'C+5*'), 2, Token('CHORD', 'C+5*'), Token('NOTE', 'B5')]
+dseq = [1, 1, 3]
 tempo = 120
 
 gen = MidiGenerator(tempo, nseq, dseq)
